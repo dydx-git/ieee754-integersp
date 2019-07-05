@@ -27,18 +27,17 @@ main:
 
 	jal ZEXCP
 
-	add $s7, $zero, $s0
+	add $s7, $zero, $s0		# $s7 = $s0
 
 	jal LEN
 
-	addi $s0, $s1, 127
-	add $s2, $zero, $s0
-	
+	addi $s0, $s1, 127		# add 127 to the length of binary input in $s0
+	add $s2, $zero, $s0		# which is the exponent so essentially
+							# $s0 = 127 + exp
 	jal LEN
 
-	addi $t0, $zero, 1
-	add $s0, $zero, $s2
-	sll $t0, $t0, $s1
+	add $s0, $zero, $s2		# $s0 = $s2
+	li $t0, 128
 
 	addi $v0, $zero, 1
 
@@ -109,23 +108,26 @@ NEG:
 
 .globl LEN
 .ent LEN
-LEN:	add $s1, $zero, $zero
-	addi $t0, $zero, 2
+LEN:	
+	add $s1, $zero, $zero	# initializes $s1 = 0
+	addi $t0, $zero, 2		
 
-LLOOP:	div $s0, $t0
-	mflo $s0
-	beq $s0, $zero, LENL
-	addi $s1, $s1, 1
-	j LLOOP
+LLOOP:	
+	div $s0, $t0			
+	mflo $s0				# storing division quotient in $s0
+	beq $s0, $zero, LENL	# this block of code essentially calculates
+	addi $s1, $s1, 1		# the length of converted binary number
+	j LLOOP					# using a loop
 
-LENL:	jr $ra
+LENL:	
+	jr $ra
 .end LEN
 
 
 .globl BIN
 .ent BIN
-BIN:	and $s3, $t0, $s0
-	srl $s3, $s3, $s1
+BIN:	
+	li $s3, 1
 	add $a0, $s3, $zero
 	syscall
 	addi $s1, $s1, -1
