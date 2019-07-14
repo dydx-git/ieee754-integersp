@@ -30,39 +30,39 @@ main:
 
 	jal zeroException
 
-	add $s7, $zero, $s0     # $s7 = $s0
+	add $a1, $zero, $s0     # $a1 = $s0
 
 	jal lengthCalculator
 
 	addi $s0, $s1, 127      # add 127 to the length of binary input in $s0
-	add $s2, $zero, $s0     # which is the exponent so essentially
+	add $a2, $zero, $s0     # which is the exponent so essentially
 							# s0 = 127 + exp
 	jal lengthCalculator
 
-	add $s0, $zero, $s2		# $s0 = $s2
+	add $s0, $zero, $a2		# $s0 = $a2
 	li $t0, 128
 
-	addi $v0, $zero, 1		
+	addi $v0, $zero, 1
 
 	jal toBinary
 
-	add $s0, $zero, $s7		# $s0 = $s7
-	add $s2, $zero, $s0		# $s2 = $s0
+	add $s0, $zero, $a1		# $s0 = $a1
+	add $a2, $zero, $s0		# $a2 = $s0
 
 	jal lengthCalculator
 
 	addi $t0, $zero, 1		# $t0 = 1
-	add $s0, $zero, $s2		# $s0 = $s2
+	add $s0, $zero, $a2		# $s0 = $a2
 
-	add $s7, $zero, $s1		# $s7 = $s1
+	add $a1, $zero, $s1		# $a1 = $s1
 
 	addi $s1, $s1, -1
 	sll $t0, $t0, $s1		
 
 	jal toBinary
 
-	add $s6, $zero, 23
-	sub $s7, $s6, $s7
+	add $a3, $zero, 23
+	sub $a1, $a3, $a1
 	add $a0, $zero, $zero
 
 	jal REP
@@ -151,8 +151,8 @@ toBinaryOut:
 .ent REP
 REP:	
 	syscall
-	addi $s7, $s7, -1
-	beq $s7, $zero, REPL
+	addi $a1, $a1, -1
+	beq $a1, $zero, REPL
 	j REP
 
 REPL:	
